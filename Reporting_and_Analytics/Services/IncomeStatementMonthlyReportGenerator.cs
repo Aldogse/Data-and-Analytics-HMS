@@ -79,11 +79,10 @@ namespace Reporting_and_Analytics.Services
 				await databaseContext.SaveChangesAsync();
 				await transaction.CommitAsync();
 			}
-			catch (Exception ex)
+			catch (DbUpdateException ex)
 			{
 				await transaction.RollbackAsync();
-				Console.Write(ex.ToString());
-				throw new ArgumentException();
+				throw new DbUpdateException(ex.Message);
 			}
 		}
 	}

@@ -24,7 +24,7 @@ namespace Reporting_and_Analytics.Repository
 
 		public async Task<List<Particular>> GetServicesByMonth(int month)
 		{
-			return await _databaseContext.Particulars.Where(m => m.transaction_date.Month == month && m.isStored == false).ToListAsync();
+			return await _databaseContext.Particulars.Where(m => m.transaction_date.Month == month).ToListAsync();
 		}
 
 		public async Task<List<Particular>> GetServicesByYear(int year)

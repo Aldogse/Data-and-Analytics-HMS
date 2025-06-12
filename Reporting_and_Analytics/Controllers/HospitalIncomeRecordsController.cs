@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Models_and_Enums.Enums;
 using Models_and_Enums.Financial;
 using Models_and_Enums.Responses.Hospital_Income;
 using Reporting_and_Analytics.Data;
@@ -28,7 +29,7 @@ namespace Reporting_and_Analytics.Controllers
         {
             try
             {
-                var month_to_check = await _databaseContext.IncomeStatements.Where(i => i.Month == month)
+                var month_to_check = await _databaseContext.IncomeStatements.Where(i => i.Month == month && i.year == DateTime.Now.Year)
                                                                             .Select(r => new
                                                                             {
                                                                                 r.total_amount,
@@ -54,7 +55,7 @@ namespace Reporting_and_Analytics.Controllers
 
                 var response = new MonthlyHospitalIncomeRecordResponse
                 {
-                    month = month,
+                    month = Enum.GetName(typeof(Month),month),
                     total_income = total,
                 };
                 return Ok(response);

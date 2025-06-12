@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models_and_Enums.Enums;
 using Models_and_Enums.patient_and_treatment_statistics;
 using Models_and_Enums.Request.PatientReport;
 using Models_and_Enums.Responses.PatientReport;
@@ -48,7 +49,7 @@ namespace Reporting_and_Analytics.Controllers
                     Age = new_patient.Age,
                     admission_date = new_patient.admission_date.ToShortDateString(),
                     PHIC = new_patient.PHIC,
-                    Sex = new_patient.Sex.ToString(),
+                    Sex = Enum.GetName(typeof(Gender),new_patient.Sex),
                     type_of_service = new_patient.type_of_service.ToString()
                 };
 
