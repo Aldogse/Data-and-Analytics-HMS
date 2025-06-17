@@ -5,10 +5,10 @@ using Reporting_and_Analytics.Interface;
 
 namespace Reporting_and_Analytics.Repository
 {
-	public class DailyReportRepository : IDailyPatientReportRepository
+	public class DailyPatientReportRepository : IDailyPatientReportRepository
 	{
 		private readonly DatabaseContext _databaseContext;
-        public DailyReportRepository(DatabaseContext databaseContext)
+        public DailyPatientReportRepository(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }

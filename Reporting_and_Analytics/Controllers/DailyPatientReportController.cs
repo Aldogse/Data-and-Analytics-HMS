@@ -7,12 +7,12 @@ namespace Reporting_and_Analytics.Controllers
 {
 	[ApiController]
 	[Route("api/DailyReport/")]
-	public class DailyReportController : ControllerBase
+	public class DailyPatientReportController : ControllerBase
 	{
 		private readonly DatabaseContext _databaseContext;
 		private readonly IPatientRecordsRepository _patientRecordsRepository;
 		private readonly IDailyPatientReportRepository _dailyPatientReportRepository;
-		public DailyReportController(DatabaseContext databaseContext,
+		public DailyPatientReportController(DatabaseContext databaseContext,
 									 IPatientRecordsRepository patientRecordsRepository,
 									 IDailyPatientReportRepository dailyPatientReportRepository)
 		{

@@ -15,11 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IParticularRepository, ParticularRepository>();
 builder.Services.AddScoped<IIncomeStatementRepository, IncomeStatementRepository>();
 builder.Services.AddScoped<IPatientRecordsRepository, PatientRecordRepository>();
-builder.Services.AddScoped<IDailyPatientReportRepository, DailyReportRepository>();
-builder.Services.AddHostedService<IncomeStatementMonthlyReportGenerator>();
+builder.Services.AddScoped<IDailyPatientReportRepository, DailyPatientReportRepository>();
+//builder.Services.AddHostedService<IncomeStatementMonthlyReportGenerator>();
 //builder.Services.AddHostedService<DailyPatientReportService>();
-builder.Services.AddHostedService<ParticularTableDataCleanUpService>();
-builder.Services.AddHostedService<DailyIncomeReportService>();
+//builder.Services.AddHostedService<ParticularTableDataCleanUpService>();
+////builder.Services.AddHostedService<MonthlyPatientReportServices>();
+//builder.Services.AddHostedService<DailyIncomeReportService>();
+//builder.Services.AddHostedService<MonthlyHospitalIncomeReportService>();
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

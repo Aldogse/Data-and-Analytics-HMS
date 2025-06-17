@@ -55,7 +55,7 @@ namespace Reporting_and_Analytics.Controllers
 
                 var response = new MonthlyHospitalIncomeRecordResponse
                 {
-                    month = Enum.GetName(typeof(Month),month),
+                    month = Enum.GetName(typeof(Month), month),
                     total_income = total,
                 };
                 return Ok(response);
@@ -98,6 +98,49 @@ namespace Reporting_and_Analytics.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("delete-income-record/{id}")]
+        public async Task<IActionResult> DeleteIncome(int id)
+        {
+            var income_to_delete = await _databaseContext.HospitalIncomeRecords.Where(i => i.report_id == id).FirstOrDefaultAsync();
+
+            if(income_to_delete == null)
+            {
+                return NotFound();
+            }
+
+            _databaseContext.HospitalIncomeRecords.Remove(income_to_delete);
+            await _databaseContext.SaveChangesAsync();
+            return Ok(income_to_delete);
+        }
+
+
+        [HttpGet("first-quarter-income")]
+        public async Task<IActionResult> first_quarter_range_income()
+        {
+            try
+            {
+                var months = new HashSet<int> { 1,2,3,4,5,6};
+                var records = await _databaseContext.HospitalIncomeRecords.Where(i => months.Contains(i.month)).OrderBy(i => i.month).ToListAsync();
+
+                var response = records.Select(i => new MonthlyHospitalIncomeRecordResponse
+                {
+                    month = Enum.GetName(typeof(Month),i.month),
+                    total_income = i.total_income,
+                }).ToList();
+                                                                          
+                if(records.Count <= 0 || records == null)
+                {
+                    return NotFound();
+                }
+                
+                return Ok(response);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException(ex.Message);
             }
         }
 

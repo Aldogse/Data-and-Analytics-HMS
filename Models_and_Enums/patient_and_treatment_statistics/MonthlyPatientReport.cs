@@ -21,6 +21,8 @@ namespace Models_and_Enums.patient_and_treatment_statistics
 		public DateTime report_generated { get; set; }
 		[Required]
 		public int month { get; set; }
+		[Required]
+		public decimal Average_age { get; set; }
 		public int phic_members { get; set; }
 	}
 }
