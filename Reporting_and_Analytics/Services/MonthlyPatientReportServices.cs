@@ -40,15 +40,10 @@ namespace Reporting_and_Analytics.Services
 				var total_patient = month_transaction.Count();
 				var phic_members = month_transaction.Where(i => i.PHIC == true).Count();
 
-				var ages = month_transaction.Select(i => i.Age).ToList();
-				int total_age = 0;
+				var ages =  month_transaction.Select(i => i.Age).Sum();
 
-				foreach(var age in ages)
-				{
-					total_age += age;
-				}
 
-				var average_age = total_age / total;
+				var average_age = ages / total;
 
 				var monthly_patient_record = new MonthlyPatientReport
 				{

@@ -16,6 +16,7 @@ builder.Services.AddScoped<IParticularRepository, ParticularRepository>();
 builder.Services.AddScoped<IIncomeStatementRepository, IncomeStatementRepository>();
 builder.Services.AddScoped<IPatientRecordsRepository, PatientRecordRepository>();
 builder.Services.AddScoped<IDailyPatientReportRepository, DailyPatientReportRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 //builder.Services.AddHostedService<IncomeStatementMonthlyReportGenerator>();
 //builder.Services.AddHostedService<DailyPatientReportService>();
 //builder.Services.AddHostedService<ParticularTableDataCleanUpService>();

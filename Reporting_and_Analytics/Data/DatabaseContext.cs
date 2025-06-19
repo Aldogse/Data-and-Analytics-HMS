@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models_and_Enums.Financial;
 using Models_and_Enums.patient_and_treatment_statistics;
+using Models_and_Enums.Staff;
 
 namespace Reporting_and_Analytics.Data
 {
@@ -19,5 +20,7 @@ namespace Reporting_and_Analytics.Data
 		public DbSet<MonthlyPatientReport> MonthlyPatientReports { get; set; }
 		public DbSet<PatientRecords> PatientRecords { get; set; }
 		public DbSet<DailyIncomeReport> DailyIncomeRecords { get; set; }
-	}
+        public DbSet<Employee> Employees { get; set; }
+		public DbSet<AdheranceReport> AdheranceReports { get; set; }
+    }
 }

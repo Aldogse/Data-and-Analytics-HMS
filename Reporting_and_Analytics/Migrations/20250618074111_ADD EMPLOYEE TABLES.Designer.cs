@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reporting_and_Analytics.Data;
 
@@ -11,9 +12,10 @@ using Reporting_and_Analytics.Data;
 namespace Reporting_and_Analytics.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250618074111_ADD EMPLOYEE TABLES")]
+    partial class ADDEMPLOYEETABLES
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,10 +456,14 @@ namespace Reporting_and_Analytics.Migrations
                     b.Property<DateTime>("date_of_birth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("end_off_day")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("end_off_day")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("full_name")
+                    b.Property<string>("first_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("last_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -467,8 +473,8 @@ namespace Reporting_and_Analytics.Migrations
                     b.Property<DateTime>("shift_start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("start_off_day")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("start_off_day")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("employee_id");
 

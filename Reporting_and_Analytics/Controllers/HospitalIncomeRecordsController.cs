@@ -77,14 +77,14 @@ namespace Reporting_and_Analytics.Controllers
                                                                              i.total_amount
                                                                          }).ToListAsync();
 
-                if(year_income.Count <=0 || year_income == null)
+                if (year_income.Count <= 0 || year_income == null)
                 {
                     return NotFound();
                 }
 
-                foreach(var item in year_income)
+                foreach (var item in year_income)
                 {
-                    total += item.total_amount;  
+                    total += item.total_amount;
                 }
 
                 var response = new YearlyHospitalIncomeRecordsResponse
@@ -106,7 +106,7 @@ namespace Reporting_and_Analytics.Controllers
         {
             var income_to_delete = await _databaseContext.HospitalIncomeRecords.Where(i => i.report_id == id).FirstOrDefaultAsync();
 
-            if(income_to_delete == null)
+            if (income_to_delete == null)
             {
                 return NotFound();
             }
@@ -122,20 +122,20 @@ namespace Reporting_and_Analytics.Controllers
         {
             try
             {
-                var months = new HashSet<int> { 1,2,3,4,5,6};
+                var months = new HashSet<int> { 1, 2, 3, 4, 5, 6 };
                 var records = await _databaseContext.HospitalIncomeRecords.Where(i => months.Contains(i.month)).OrderBy(i => i.month).ToListAsync();
 
                 var response = records.Select(i => new MonthlyHospitalIncomeRecordResponse
                 {
-                    month = Enum.GetName(typeof(Month),i.month),
+                    month = Enum.GetName(typeof(Month), i.month),
                     total_income = i.total_income,
                 }).ToList();
-                                                                          
-                if(records.Count <= 0 || records == null)
+
+                if (records.Count <= 0 || records == null)
                 {
                     return NotFound();
                 }
-                
+
                 return Ok(response);
             }
             catch (DbUpdateException ex)
@@ -144,5 +144,44 @@ namespace Reporting_and_Analytics.Controllers
             }
         }
 
-    }
+        [HttpGet("second-quarter-income-report")]
+        public async Task<IActionResult> second_quarter_income_report()
+        {
+            var months = new HashSet<int> {7,8,9,10,11,12 };
+
+            try
+            {
+                var records = await _databaseContext.HospitalIncomeRecords.Where(i => months.Contains(i.month))
+                                                                          .Select(i => new
+                                                                          {
+                                                                              i.month,
+                                                                              i.total_income
+                                                                          }).ToListAsync();
+                if(records.Count <= 0 || records == null)
+                {
+                    return NotFound();
+                }
+
+                var quarter_report = records.Select(i => new MonthlyHospitalIncomeRecordResponse
+                {
+                    month = Enum.GetName(typeof(Month),i.month),
+                    total_income = i.total_income,
+                }).ToList();
+
+                return Ok(quarter_report);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+ 
+	}     
+
 }
+    
+
+
+
+    
+
