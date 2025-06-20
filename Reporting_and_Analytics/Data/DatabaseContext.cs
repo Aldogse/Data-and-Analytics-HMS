@@ -11,8 +11,20 @@ namespace Reporting_and_Analytics.Data
 	{
 		public DatabaseContext(DbContextOptions <DatabaseContext> options) : base(options)
 		{
-			
+			 
 		}
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			base.OnModelCreating(builder);
+			builder.Entity<Employee>()
+				   .Property(i => i.shift_start)
+				   .HasColumnType("time");
+
+			builder.Entity<Employee>()
+				   .Property(i => i.shift_end)
+				   .HasColumnType("time");
+		}
+
 		public DbSet <Particular> Particulars { get; set; }
 		public DbSet <IncomeStatement> IncomeStatements { get; set; }
         public DbSet<HospitalIncomeRecords> HospitalIncomeRecords { get; set; }
@@ -22,5 +34,7 @@ namespace Reporting_and_Analytics.Data
 		public DbSet<DailyIncomeReport> DailyIncomeRecords { get; set; }
         public DbSet<Employee> Employees { get; set; }
 		public DbSet<AdheranceReport> AdheranceReports { get; set; }
+
+		
     }
 }

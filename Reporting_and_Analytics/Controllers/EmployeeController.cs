@@ -37,8 +37,6 @@ namespace Reporting_and_Analytics.Controllers
             try
             {
                 var employee_details = await _employeeRepository.get_employee_by_Id(employee_id);
-                var shift_start = employee_details.shift_start.Hour;
-                var shift_end = employee_details.shift_end.Hour;
 
                 if (employee_details == null)
                 {
@@ -51,8 +49,6 @@ namespace Reporting_and_Analytics.Controllers
                     date_of_birth = employee_details.date_of_birth.ToShortDateString(),
                     start_off_day = Enum.GetName(typeof(Days), employee_details.start_off_day),
                     end_off_day = Enum.GetName(typeof(Days), employee_details.end_off_day),
-                    shift_end = shift_end.ToString(),
-                    shift_start = shift_start.ToString(),
                 };
 
                 return Ok(response);
@@ -78,16 +74,16 @@ namespace Reporting_and_Analytics.Controllers
                     full_name = new_employee.full_name,
                     date_of_birth = new_employee.date_of_birth,
                     adherance_rate = 100,
+                    shift_start = new TimeSpan(new_employee.shift_start,0,0),
+                    shift_end =  new TimeSpan(new_employee.shift_end,0,0),
                     end_off_day = new_employee.end_off_day,
                     start_off_day = new_employee.start_off_day,
-                    shift_end = new_employee.shift_end,
-                    shift_start = new_employee.shift_start,
                     employee_id = GenerateEmployeeId(new_employee.full_name,new_employee.date_of_birth)
                 };
 
                _databaseContext.Employees.Add(employee);
                await _databaseContext.SaveChangesAsync();
-                return Ok(employee);
+                return Ok();
             }
             catch (DbUpdateException ex)
             {
@@ -98,7 +94,7 @@ namespace Reporting_and_Analytics.Controllers
                 throw new NullReferenceException(ex.Message);
             }
         }
-        [HttpDelete("delete-employee/{employee_id")]
+        [HttpDelete("delete-employee/{employee_id}")]
         public async Task<IActionResult> DeleteEmployee(string employee_id)
         {
             try
@@ -109,7 +105,7 @@ namespace Reporting_and_Analytics.Controllers
                 {
                     _databaseContext.Employees.Remove(employee_to_delete);
                     await _databaseContext.SaveChangesAsync();
-                    return Ok(employee_to_delete);
+                    return Ok();
                 }
                 return NotFound();
             }
