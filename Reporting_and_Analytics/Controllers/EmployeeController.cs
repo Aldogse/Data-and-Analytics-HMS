@@ -19,19 +19,19 @@ namespace Reporting_and_Analytics.Controllers
             _databaseContext = databaseContext;
             _employeeRepository = employeeRepository;
         }
-
-        private string GenerateEmployeeId(string full_name,DateTime date_of_birth)
+        private static string GenerateEmployeeId(string full_name,DateTime date_of_birth)
         {
-            var initials = string.Concat(full_name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(i => i[0]))
+            var initials = string.Concat(full_name.Split(' ',StringSplitOptions.RemoveEmptyEntries)
+                                                  .Select(i => i[0]))
                                                   .ToUpper();
-            var dob = date_of_birth.ToString("yyMMdd");
+            var dob = date_of_birth.ToString("MMddyy");
             var random = new Random();
             var random_number = random.Next(4,99);
 
-            return $"EMP-{initials}{dob}{random}";
+            return $"EID-{initials}{dob}{random_number}";
         }
 
-        [HttpGet("employee-details/{employee_id}")]
+		[HttpGet("employee-details/{employee_id}")]
         public async Task<IActionResult> EmployeeDetails(string employee_id)
         {
             try
@@ -47,6 +47,8 @@ namespace Reporting_and_Analytics.Controllers
                 {
                     full_name = employee_details.full_name,
                     date_of_birth = employee_details.date_of_birth.ToShortDateString(),
+                    shift_start = employee_details.shift_start_formatted,
+                    shift_end = employee_details.shift_end_formatted,
                     start_off_day = Enum.GetName(typeof(Days), employee_details.start_off_day),
                     end_off_day = Enum.GetName(typeof(Days), employee_details.end_off_day),
                 };
@@ -71,11 +73,11 @@ namespace Reporting_and_Analytics.Controllers
             {
                 var employee = new Employee
                 {
-                    full_name = new_employee.full_name,
+                    full_name = new_employee.full_name.ToUpper(),
                     date_of_birth = new_employee.date_of_birth,
                     adherance_rate = 100,
-                    shift_start = new TimeSpan(new_employee.shift_start,0,0),
-                    shift_end =  new TimeSpan(new_employee.shift_end,0,0),
+                    shift_start = new TimeSpan(new_employee.shift_start_hour,new_employee.shift_start_minute,0),
+                    shift_end =  new TimeSpan(new_employee.shift_end_hour,new_employee.shift_end_minute,0),
                     end_off_day = new_employee.end_off_day,
                     start_off_day = new_employee.start_off_day,
                     employee_id = GenerateEmployeeId(new_employee.full_name,new_employee.date_of_birth)

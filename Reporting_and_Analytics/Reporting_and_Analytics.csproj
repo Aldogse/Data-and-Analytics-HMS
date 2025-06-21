@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Models_and_Enums\Models_and_Enums.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>
