@@ -12,9 +12,16 @@ namespace Reporting_and_Analytics.Repository
         {
             _databaseContext = databaseContext;
         }
+
+		public async Task<List<Employee>> GetEmployees()
+		{
+			return await _databaseContext.Employees.OrderByDescending(i => i.full_name).ToListAsync();
+		}
+
 		public async Task<Employee> get_employee_by_Id(string employee_id)
 		{
 			return await _databaseContext.Employees.Where(i => i.employee_id == employee_id).FirstOrDefaultAsync();
 		}
+
 	}
 }

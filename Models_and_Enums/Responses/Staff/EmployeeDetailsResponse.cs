@@ -12,6 +12,7 @@ namespace Models_and_Enums.Responses.Staff
 {
 	public class EmployeeDetailsResponse
 	{
+		public string employee_id { get; set; }
 		public string full_name { get; set; }
 		public string date_of_birth { get; set; }
 		public string shift_start { get; set; }

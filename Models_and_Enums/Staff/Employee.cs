@@ -16,6 +16,10 @@ namespace Models_and_Enums.Staff
 		public string employee_id {  get; set; }
         [Required]
         public string full_name { get; set; }
+		[JsonIgnore]
+		public string first_name => full_name.Split(' ').First().ToLower();
+		[JsonIgnore]
+		public string last_name => full_name.Split(' ').Last().ToLower();
 		[Required]
 		public DateTime date_of_birth { get; set; }
         public decimal adherance_rate { get; set; }
