@@ -20,6 +20,73 @@ namespace Reporting_and_Analytics.Controllers
             _patientRecordsRepository = patientRecordsRepository;
         }
 
+
+        [HttpGet("first-name-search/{first_name}")]
+        public async Task<IActionResult> FirstNameSearch(string first_name)
+        {
+            try
+            {
+                var results =  _databaseContext.PatientRecords.AsEnumerable()
+                                                              .Where(i => i.first_name == first_name.ToLower())
+                                                              .ToList();
+                if(results.Count == 0 || results == null)
+                {
+                    return NotFound();
+                }
+
+                var response = results.Select(i => new PatientDetailsResponse
+                {
+                    patient_id = i.patient_id,
+                    Full_name = i.Full_name,
+                    Age = i.Age,
+                    admission_date = i.admission_date.ToShortDateString(),
+                    Sex = i.Sex.ToString(),
+                    type_of_service = i.type_of_service.ToString(),
+                }).ToList();
+
+                return Ok(response);
+
+            }
+            catch (NullReferenceException ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+        }
+
+        [HttpGet("last-name-search/{last_name}")]
+        public async Task<IActionResult> LastNameSearch(string last_name)
+        {
+            try
+            {
+                var results = _databaseContext.PatientRecords.AsEnumerable()
+                                                             .Where(i => i.last_name == last_name.ToLower())
+                                                             .ToList(); 
+
+                if(results != null && results.Count != 0) 
+                {
+                    var response = results.Select(i => new PatientDetailsResponse
+                    {
+                        patient_id=i.patient_id,
+                        Full_name=i.Full_name,
+                        admission_date = i.admission_date.ToShortDateString(),
+                        Age = i.Age,
+                        Sex = i.Sex.ToString(),
+                        type_of_service = i.type_of_service.ToString(),
+                    }).OrderBy(i => i.Full_name).ToList();
+
+                    return Ok(response);
+                }
+
+                return NotFound();
+            }
+            catch (NullReferenceException ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+        }
+
+
+
         [HttpPost("add-new-patient")]
         public async Task<IActionResult> NewPatient([FromBody]AddNewPatientRequest newPatientRequest)
         {

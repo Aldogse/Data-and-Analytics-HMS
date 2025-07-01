@@ -10,6 +10,7 @@ namespace Models_and_Enums.Responses.PatientReport
 {
 	public class PatientDetailsResponse
 	{
+		public Guid patient_id { get; set; } 
 		public string Full_name { get; set; }
 		[Required]
 		public int Age { get; set; }

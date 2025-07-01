@@ -162,7 +162,7 @@ namespace Reporting_and_Analytics.Controllers
         {
             try
             {
-                var data =   _databaseContext.Employees.AsEnumerable().Where(i => i.first_name == first_name).ToList();
+                var data =   _databaseContext.Employees.AsEnumerable().Where(i => i.first_name == first_name.ToLower()).ToList();
 
                 if (data.Count > 0 || data != null)
                 {
