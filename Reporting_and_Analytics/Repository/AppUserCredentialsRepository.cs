@@ -25,24 +25,26 @@ namespace Reporting_and_Analytics.Repository
 
 		public string GenerateSecurityStringToken(Employee EmployeeCredentials)
 		{
-			
-			var claims = new List<Claim>()
+			//Generate the claim for the token
+			var claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.Name,EmployeeCredentials.full_name),
-				new Claim(ClaimTypes.Email,EmployeeCredentials.Email),
+				new Claim(ClaimTypes.Email,EmployeeCredentials.Email)
 			};
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("JWT:Key").Value));
-			var signingCredentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256Signature);
 
+			var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+			//Set the security token that will be included on the Header
 			var securityToken = new JwtSecurityToken(
-				claims:claims,
+				claims: claims,
+				issuer: _config.GetSection("JWT:Issuer").Value,
 				audience: _config.GetSection("JWT:Audience").Value,
-				issuer:_config.GetSection("JWT:Issuer").Value,
+				expires: DateTime.Now.AddMinutes(60),
 				signingCredentials: signingCredentials
 				);
-
-			var SecurityTokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
-			return SecurityTokenString;
+			
+			return new JwtSecurityTokenHandler().WriteToken(securityToken);
 		}
 
 		public async Task<bool> Login(AppUserCredentials userCredentials)

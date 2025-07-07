@@ -14,11 +14,13 @@ namespace Reporting_and_Analytics.Controllers
 	{
         private readonly IAppUserCredentials _appUserCredentials;
 		private readonly DatabaseContext _context;
+		private readonly IEmployeeRepository _employeeRepository;
 
-		public AuthorizationController(IAppUserCredentials appUserCredentials,DatabaseContext context)
+		public AuthorizationController(IAppUserCredentials appUserCredentials,DatabaseContext context,IEmployeeRepository employeeRepository)
         {
             _appUserCredentials = appUserCredentials;
 			_context = context;
+			_employeeRepository = employeeRepository;
 		}
 
         [HttpPost("Register")]
@@ -30,7 +32,15 @@ namespace Reporting_and_Analytics.Controllers
             }
             try
             {
-                var newUser = await _appUserCredentials.Register(registerUserCredentials);
+
+				var userEmail = await _employeeRepository.GetEmployeeByEmail(registerUserCredentials.Email);
+
+				if (userEmail == null)
+				{
+					return NotFound();
+				}
+
+				var newUser = await _appUserCredentials.Register(registerUserCredentials);
                 return Ok(newUser);
             }
             catch (DbUpdateException ex)
@@ -51,18 +61,12 @@ namespace Reporting_and_Analytics.Controllers
                 return BadRequest(ModelState);
             }
 
-			var userEmail = await _context.Employees.Where(i => i.Email == userCredentials.Email).FirstOrDefaultAsync();
-
-            if(userEmail == null)
-            {
-                return NotFound();
-            }
-
+            var userEmail = await _employeeRepository.GetEmployeeByEmail(userCredentials.Email);
 			var LogInAttempt = await _appUserCredentials.Login(userCredentials);
             if(LogInAttempt)
             {
                 var token = _appUserCredentials.GenerateSecurityStringToken(userEmail);
-                return Ok();
+                return Ok(token);
             }
 
             return BadRequest();

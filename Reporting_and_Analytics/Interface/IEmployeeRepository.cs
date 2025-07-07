@@ -6,5 +6,6 @@ namespace Reporting_and_Analytics.Interface
 	{
 		Task<Employee> get_employee_by_Id(string employee_id);
 		Task<List<Employee>> GetEmployees();
+		Task<Employee>GetEmployeeByEmail(string email);
 	}
 }

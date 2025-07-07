@@ -13,6 +13,11 @@ namespace Reporting_and_Analytics.Repository
             _databaseContext = databaseContext;
         }
 
+		public async Task<Employee> GetEmployeeByEmail(string email)
+		{
+			return await _databaseContext.Employees.Where(i => i.Email == email).FirstOrDefaultAsync();
+		}
+
 		public async Task<List<Employee>> GetEmployees()
 		{
 			return await _databaseContext.Employees.OrderByDescending(i => i.full_name).ToListAsync();
@@ -22,6 +27,7 @@ namespace Reporting_and_Analytics.Repository
 		{
 			return await _databaseContext.Employees.Where(i => i.employee_id == employee_id).FirstOrDefaultAsync();
 		}
+
 
 	}
 }

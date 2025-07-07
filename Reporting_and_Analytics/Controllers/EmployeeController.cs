@@ -221,5 +221,26 @@ namespace Reporting_and_Analytics.Controllers
                 throw new NullReferenceException(ex.Message);
             }
         }
+
+        [HttpPut("Add-Employee-Email/{employee_id}")]
+        public async Task <IActionResult> AddEmailAddress([FromBody]string Email,string employee_id)
+        {
+            if(Email == null)
+            {
+                return BadRequest();
+            }
+
+            var EmployeeToUpdate = await _employeeRepository.get_employee_by_Id(employee_id);
+
+            if(EmployeeToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            EmployeeToUpdate.Email = Email;
+            await _databaseContext.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

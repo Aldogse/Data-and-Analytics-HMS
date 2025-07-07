@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models_and_Enums.Enums;
 using Models_and_Enums.Financial;
@@ -118,6 +119,7 @@ namespace Reporting_and_Analytics.Controllers
 
 
         [HttpGet("first-quarter-income")]
+        [Authorize]
         public async Task<IActionResult> first_quarter_range_income()
         {
             try
