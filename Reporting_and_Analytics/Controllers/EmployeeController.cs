@@ -9,6 +9,8 @@ using Reporting_and_Analytics.Interface;
 
 namespace Reporting_and_Analytics.Controllers
 {
+    [Route("api/Employee")]
+    [ApiController]
 	public class EmployeeController : ControllerBase
 	{
         private readonly DatabaseContext _databaseContext;

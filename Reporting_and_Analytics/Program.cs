@@ -5,6 +5,10 @@ using Reporting_and_Analytics.Interface;
 using Reporting_and_Analytics.Repository;
 using System.Text.Json.Serialization;
 using Reporting_and_Analytics.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 
@@ -23,16 +27,45 @@ builder.Services.AddScoped<IIncomeStatementRepository, IncomeStatementRepository
 builder.Services.AddScoped<IPatientRecordsRepository, PatientRecordRepository>();
 builder.Services.AddScoped<IDailyPatientReportRepository, DailyPatientReportRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IAppUserCredentials, AppUserCredentialsRepository>();
 //builder.Services.AddHostedService<IncomeStatementMonthlyReportGenerator>();
 //builder.Services.AddHostedService<DailyPatientReportService>();
 //builder.Services.AddHostedService<ParticularTableDataCleanUpService>();
 ////builder.Services.AddHostedService<MonthlyPatientReportServices>();
 //builder.Services.AddHostedService<DailyIncomeReportService>();
 //builder.Services.AddHostedService<MonthlyHospitalIncomeReportService>();
+
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+	options.Password.RequiredLength = 5;
+})
+	.AddEntityFrameworkStores<DatabaseContext>()
+	.AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateActor = true,
+		ValidateIssuer = true,
+		ValidateAudience = true,
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
+		ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
+		ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
+	};
+});
+
+
 var app = builder.Build();
 
 
@@ -43,7 +76,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.UseHttpsRedirection();
 

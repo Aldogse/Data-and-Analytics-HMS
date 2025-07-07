@@ -16,6 +16,8 @@ namespace Models_and_Enums.Staff
 		public string employee_id {  get; set; }
         [Required]
         public string full_name { get; set; }
+		[Required]
+		public string Email { get; set; }
 		[JsonIgnore]
 		public string first_name => full_name.Split(' ').First().ToLower();
 		[JsonIgnore]

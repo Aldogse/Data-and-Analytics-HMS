@@ -1,0 +1,71 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Models_and_Enums.Request.Staff;
+using Models_and_Enums.Staff;
+using Reporting_and_Analytics.Data;
+using Reporting_and_Analytics.Interface;
+
+namespace Reporting_and_Analytics.Controllers
+{
+	[Route("api/[controller]")]
+	[ApiController]
+	public class AuthorizationController : ControllerBase
+	{
+        private readonly IAppUserCredentials _appUserCredentials;
+		private readonly DatabaseContext _context;
+
+		public AuthorizationController(IAppUserCredentials appUserCredentials,DatabaseContext context)
+        {
+            _appUserCredentials = appUserCredentials;
+			_context = context;
+		}
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> AppUserRegistration([FromBody]RegisterUserCredentialsRequest registerUserCredentials)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var newUser = await _appUserCredentials.Register(registerUserCredentials);
+                return Ok(newUser);
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+        }
+
+        [HttpPost("LogIn")]
+        public async Task <IActionResult> LogIn(AppUserCredentials userCredentials)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+			var userEmail = await _context.Employees.Where(i => i.Email == userCredentials.Email).FirstOrDefaultAsync();
+
+            if(userEmail == null)
+            {
+                return NotFound();
+            }
+
+			var LogInAttempt = await _appUserCredentials.Login(userCredentials);
+            if(LogInAttempt)
+            {
+                var token = _appUserCredentials.GenerateSecurityStringToken(userEmail);
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+    }
+}
