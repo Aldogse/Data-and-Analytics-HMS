@@ -119,7 +119,6 @@ namespace Reporting_and_Analytics.Controllers
 
 
         [HttpGet("first-quarter-income")]
-        [Authorize]
         public async Task<IActionResult> first_quarter_range_income()
         {
             try
@@ -147,6 +146,7 @@ namespace Reporting_and_Analytics.Controllers
         }
 
         [HttpGet("second-quarter-income-report")]
+        [Authorize]
         public async Task<IActionResult> second_quarter_income_report()
         {
             var months = new HashSet<int> {7,8,9,10,11,12 };

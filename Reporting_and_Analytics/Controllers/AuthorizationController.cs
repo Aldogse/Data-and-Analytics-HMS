@@ -54,7 +54,7 @@ namespace Reporting_and_Analytics.Controllers
         }
 
         [HttpPost("LogIn")]
-        public async Task <IActionResult> LogIn(AppUserCredentials userCredentials)
+        public async Task <IActionResult> LogIn([FromBody]AppUserCredentials userCredentials)
         {
             if (!ModelState.IsValid)
             {

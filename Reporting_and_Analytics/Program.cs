@@ -56,15 +56,16 @@ builder.Services.AddAuthentication(options =>
 {
 	options.TokenValidationParameters = new TokenValidationParameters
 	{
-		ValidateActor = true,
 		ValidateIssuer = true,
+		ValidateActor = true,
 		ValidateAudience = true,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
-		ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
 		ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
+		ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
+		ValidateLifetime = true,
+		
 	};
 });
-
 
 var app = builder.Build();
 
