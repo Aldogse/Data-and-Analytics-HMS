@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Net.Http.Headers;
+using System.Net.Mime;
 
 
 
@@ -77,6 +79,12 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseCors(policy =>
+{
+	policy.WithOrigins("https://localhost:44302", "https://localhost:44302")
+		  .AllowAnyMethod()
+		  .WithHeaders(HeaderNames.ContentType);
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

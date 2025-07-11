@@ -36,7 +36,6 @@ namespace Reporting_and_Analytics.Controllers
 
                 var response = results.Select(i => new PatientDetailsResponse
                 {
-                    patient_id = i.patient_id,
                     Full_name = i.Full_name,
                     Age = i.Age,
                     admission_date = i.admission_date.ToShortDateString(),
@@ -66,7 +65,6 @@ namespace Reporting_and_Analytics.Controllers
                 {
                     var response = results.Select(i => new PatientDetailsResponse
                     {
-                        patient_id=i.patient_id,
                         Full_name=i.Full_name,
                         admission_date = i.admission_date.ToShortDateString(),
                         Age = i.Age,
@@ -147,7 +145,7 @@ namespace Reporting_and_Analytics.Controllers
                     admission_date = item.admission_date.ToShortDateString(),
                     PHIC = item.PHIC,
                     Sex=item.Sex.ToString(),
-                    type_of_service = item.type_of_service.ToString()
+                    type_of_service = item.type_of_service.ToString(),
                 }).ToList();
 
                 return Ok(response);
