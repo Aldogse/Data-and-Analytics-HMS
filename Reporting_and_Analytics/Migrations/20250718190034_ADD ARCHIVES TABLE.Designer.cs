@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reporting_and_Analytics.Data;
 
@@ -11,9 +12,10 @@ using Reporting_and_Analytics.Data;
 namespace Reporting_and_Analytics.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250718190034_ADD ARCHIVES TABLE")]
+    partial class ADDARCHIVESTABLE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,44 +295,6 @@ namespace Reporting_and_Analytics.Migrations
                     b.HasKey("report_id");
 
                     b.ToTable("ParticularsArchives");
-                });
-
-            modelBuilder.Entity("Models_and_Enums.Archives.PatientRecordArchives", b =>
-                {
-                    b.Property<int>("report_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("report_Id"), 1L, 1);
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Full_name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PHIC")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Sex")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("admission_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("patient_id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("tracked")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("type_of_service")
-                        .HasColumnType("int");
-
-                    b.HasKey("report_Id");
-
-                    b.ToTable("PatientRecordArchives");
                 });
 
             modelBuilder.Entity("Models_and_Enums.Financial.DailyIncomeReport", b =>

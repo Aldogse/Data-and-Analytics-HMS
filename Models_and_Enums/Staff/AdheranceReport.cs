@@ -17,8 +17,12 @@ namespace Models_and_Enums.Staff
         public string employee_id { get; set; }
         [JsonIgnore]
         public Employee Employee { get; set; }
-        public DateTime clock_in { get; set; }
-        public DateTime clock_out { get; set; }
+        public TimeSpan clock_in { get; set; }
+        [JsonIgnore]
+        public string clock_in_string => DateTime.Today.Add(clock_in).ToString("hh:mm tt");
+        public TimeSpan clock_out { get; set; }
+        [JsonIgnore]
+        public string clock_out_string => DateTime.Today.Add(clock_out).ToString("hh:mm tt");
         public DateTime report_date { get; set; }
     }
 }

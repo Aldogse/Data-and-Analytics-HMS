@@ -14,7 +14,7 @@ namespace Models_and_Enums.Responses.PatientReport
 		[Required]
 		public int Age { get; set; }
 		[Required]
-		public string Sex { get; set; }
+		public  string Sex { get; set; }
 		public string admission_date { get; set; }
 		public bool PHIC { get; set; }
 		public string type_of_service { get; set; }

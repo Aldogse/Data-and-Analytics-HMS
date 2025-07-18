@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Models_and_Enums.Archives;
 using Models_and_Enums.Financial;
 using Models_and_Enums.patient_and_treatment_statistics;
 using Models_and_Enums.Staff;
@@ -23,7 +24,15 @@ namespace Reporting_and_Analytics.Data
 			builder.Entity<Employee>()
 				   .Property(i => i.shift_end)
 				   .HasColumnType("time");
-		}
+
+			builder.Entity<AdheranceReport>()
+					.Property(i => i.clock_in)
+					.HasColumnType("time");
+
+            builder.Entity<AdheranceReport>()
+                    .Property(i => i.clock_out)
+                    .HasColumnType("time");
+        }
 
 		public DbSet <Particular> Particulars { get; set; }
 		public DbSet <IncomeStatement> IncomeStatements { get; set; }
@@ -34,7 +43,9 @@ namespace Reporting_and_Analytics.Data
 		public DbSet<DailyIncomeReport> DailyIncomeRecords { get; set; }
         public DbSet<Employee> Employees { get; set; }
 		public DbSet<AdheranceReport> AdheranceReports { get; set; }
-
-		
+		public DbSet<ParticularsArchives> ParticularsArchives { get; set; }
+		public DbSet<DailyIncomeReportArchive> DailyIncomeReportArchives { get; set; }
+		public DbSet<DailyPatientReportArchives> DailyPatientReportArchives { get; set; }
+		public DbSet<PatientRecordArchives> PatientRecordArchives { get; set; }
     }
 }
