@@ -14,7 +14,9 @@ namespace Models_and_Enums.Request.Staff
 	{
 		[Required]
 		public string full_name { get; set; }
-		[Required]
+        [Required]
+        public string email { get; set; }
+        [Required]
 		public DateTime date_of_birth { get; set; }
 		public decimal adherance_rate { get; set; }
 		[Required]

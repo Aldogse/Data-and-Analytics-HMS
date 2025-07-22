@@ -21,18 +21,17 @@ namespace Reporting_and_Analytics.Controllers
             _databaseContext = databaseContext;
             _employeeRepository = employeeRepository;
         }
-        private static string GenerateEmployeeId(string full_name,DateTime date_of_birth)
-        {
-            var initials = string.Concat(full_name.Split(' ',StringSplitOptions.RemoveEmptyEntries)
-                                                  .Select(i => i[0]))
-                                                  .ToUpper();
-            var dob = date_of_birth.ToString("MMddyy");
-            var random = new Random();
-            var random_number = random.Next(4,99);
+      private static string GenerateEmployeeId(string fullName,DateTime dateOfBirth)
+      {
+            string initials = string.Concat(fullName.Split(' ',StringSplitOptions.RemoveEmptyEntries)
+                                                    .Select(i => i[0])).ToUpper();
+            string birthDay = dateOfBirth.ToString("MM/dd/yyyy");
 
-            return $"EID-{initials}{dob}{random_number}";
-        }
+            Random random = new Random();
+            int randomNum = random.Next(4,99);
 
+            return $"EMP-{initials}{birthDay}{randomNum}";
+      }
 
         [HttpGet("get-employee-details")]
         public async Task<IActionResult> GetEmployees()
@@ -122,7 +121,8 @@ namespace Reporting_and_Analytics.Controllers
                     shift_end =  new TimeSpan(new_employee.shift_end_hour,new_employee.shift_end_minute,0),
                     end_off_day = new_employee.end_off_day,
                     start_off_day = new_employee.start_off_day,
-                    employee_id = GenerateEmployeeId(new_employee.full_name,new_employee.date_of_birth)
+                    employee_id = GenerateEmployeeId(new_employee.full_name,new_employee.date_of_birth),
+                    Email = new_employee.email,
                 };
 
                _databaseContext.Employees.Add(employee);

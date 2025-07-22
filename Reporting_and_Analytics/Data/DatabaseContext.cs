@@ -32,6 +32,10 @@ namespace Reporting_and_Analytics.Data
             builder.Entity<AdheranceReport>()
                     .Property(i => i.clock_out)
                     .HasColumnType("time");
+
+            builder.Entity<Employee>()
+				.Property(i => i.date_of_birth)
+				.HasColumnType ("date");
         }
 
 		public DbSet <Particular> Particulars { get; set; }
