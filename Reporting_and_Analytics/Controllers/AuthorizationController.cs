@@ -62,7 +62,7 @@ namespace Reporting_and_Analytics.Controllers
             }
 
             var userEmail = await _employeeRepository.GetEmployeeByEmail(userCredentials.Email);
-			var LogInAttempt = await _appUserCredentials.Login(userCredentials);
+	   var LogInAttempt = await _appUserCredentials.Login(userCredentials);
             if(LogInAttempt)
             {
                 var token = _appUserCredentials.GenerateSecurityStringToken(userEmail);
