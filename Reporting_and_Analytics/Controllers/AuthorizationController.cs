@@ -45,11 +45,11 @@ namespace Reporting_and_Analytics.Controllers
             }
             catch (DbUpdateException ex)
             {
-                return StatusCode(500,ex.Message);
+                throw new DbUpdateException(ex.Message);
             }
             catch (NullReferenceException ex)
             {
-                return StatusCode(500,ex.Message);
+                 throw new NullReferenceException(ex.Message);
             }
         }
 
