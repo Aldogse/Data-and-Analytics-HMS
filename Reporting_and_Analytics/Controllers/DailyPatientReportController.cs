@@ -36,7 +36,7 @@ namespace Reporting_and_Analytics.Controllers
 				await _databaseContext.SaveChangesAsync();
 				return Ok();
 			}
-			catch (Exception ex)
+			catch (DbUpdateException ex)
 			{
 				return StatusCode(500, ex.Message);
 			}
@@ -67,7 +67,7 @@ namespace Reporting_and_Analytics.Controllers
 
 				return Ok(response);
 			}
-			catch (Exception ex)
+			catch (NullReferenceException ex)
 			{
 				return StatusCode(500, ex.Message);
 			}
